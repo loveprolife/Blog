@@ -1,0 +1,28 @@
+//静态方法里面返回当前类，动态方法里面返回当前对象
+class logger{
+    private static $_instance, $dirFile, $level;
+    private function __construct()
+    {
+        //
+    }
+    public static function getInstance()
+    {
+        if(!isset(self::$_instance)){
+            self::$_instance = new self();
+        }
+        return self::$_instance;
+    }
+    public function setDirFile($dirFile){
+        self::$dirFile = $dirFile;
+        return $this;
+    }
+    public function setLevel($level){
+        self::$level = $level;
+        return $this;
+    }
+    public function write($str){
+        file_put_contents(self::$dirFile, date('Y-m-d H:i:s', time()) . "  " . self::$level . "  " . $str . "\r\n", FILE_APPEND);
+    }
+}
+
+logger::getInstance()->setDirFile('aaaa.txt')->setLevel('Notice')->write('hello world!');
